@@ -14,6 +14,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -70,7 +71,8 @@ public class MainActivity extends AppCompatActivity {
                             Toast.makeText(MainActivity.this, "Nie można cofnąć czasu!", Toast.LENGTH_SHORT).show();
                         } else {
                             // Formatujemy i wyświetlamy
-                            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy, HH:mm");
+                            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE, d MMMM yyyy 'o' HH:mm", Locale.getDefault());
+
                             tvSelectedDateTime.setText("Umówiono: " + currentDate.format(formatter));
                         }
 
@@ -102,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
                             Toast.makeText(MainActivity.this, "Nie można cofnąć czasu!", Toast.LENGTH_SHORT).show();
                         } else {
                             // 5. Formatowanie wyświetlania
-                            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy, HH:mm");
+                            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE, d MMMM yyyy 'o' HH:mm", Locale.getDefault());
                             tvSelectedDateTime.setText("Umówiono: " + currentDate.format(formatter));
                         }
                         // Formatujemy i wyświetlamy
