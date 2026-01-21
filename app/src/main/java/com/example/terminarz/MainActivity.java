@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -65,10 +66,14 @@ public class MainActivity extends AppCompatActivity {
 
                         // Po wybraniu daty, automatycznie otwieramy zegar
                         currentDate = LocalDateTime.of(year, monthOfYear +1, dayOfMonth, currentDate.getHour(), currentDate.getMinute());
+                        if (currentDate.isBefore(LocalDateTime.now())) {
+                            Toast.makeText(MainActivity.this, "Nie można cofnąć czasu!", Toast.LENGTH_SHORT).show();
+                        } else {
+                            // Formatujemy i wyświetlamy
+                            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy, HH:mm");
+                            tvSelectedDateTime.setText("Umówiono: " + currentDate.format(formatter));
+                        }
 
-                        // Formatujemy i wyświetlamy
-                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy, HH:mm");
-                        tvSelectedDateTime.setText("Umówiono: " + currentDate.format(formatter));
                     }
                 },
                 year, month, day // Wartości domyślne (startowe)
@@ -93,9 +98,15 @@ public class MainActivity extends AppCompatActivity {
                         // Tworzymy obiekt LocalDateTime (miesiąc + 1 dla LocalDate!)
                         currentDate = LocalDateTime.of(currentDate.getYear(), currentDate.getMonth(), currentDate.getDayOfMonth(), hourOfDay, minute);
 
+                        if (currentDate.isBefore(LocalDateTime.now())) {
+                            Toast.makeText(MainActivity.this, "Nie można cofnąć czasu!", Toast.LENGTH_SHORT).show();
+                        } else {
+                            // 5. Formatowanie wyświetlania
+                            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy, HH:mm");
+                            tvSelectedDateTime.setText("Umówiono: " + currentDate.format(formatter));
+                        }
                         // Formatujemy i wyświetlamy
-                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy, HH:mm");
-                        tvSelectedDateTime.setText("Umówiono: " + currentDate.format(formatter));
+
                     }
                 },
                 hour, minute, true // true = format 24h
@@ -103,4 +114,5 @@ public class MainActivity extends AppCompatActivity {
 
         timePickerDialog.show();
     }
+
 }
