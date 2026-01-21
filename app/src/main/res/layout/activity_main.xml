@@ -20,6 +20,12 @@
         android:layout_height="wrap_content"
         android:text="WYBIERZ TERMIN SPOTKANIA"
         android:padding="20dp"/>
+    <Button
+        android:id="@+id/btnPickTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="WYBIERZ GODZINĘ SPOTKANIA"
+        android:padding="20dp"/>
 
     <TextView
         android:id="@+id/tvSelectedDateTime"

@@ -9,18 +9,19 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button btnPickDateTime;
+    private Button btnPickDateTime, btnPickTime;
     private TextView tvSelectedDateTime;
 
     // Zmienne do przechowywania wyboru użytkownika
-    private int selectedYear, selectedMonth, selectedDay;
 
+    LocalDateTime currentDate;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,13 +29,22 @@ public class MainActivity extends AppCompatActivity {
 
         btnPickDateTime = findViewById(R.id.btnPickDateTime);
         tvSelectedDateTime = findViewById(R.id.tvSelectedDateTime);
+        btnPickTime = findViewById(R.id.btnPickTime);
+        currentDate = LocalDateTime.of(LocalDateTime.now().getYear(), LocalDate.now().getMonth(), LocalDate.now().getDayOfMonth(), LocalDateTime.now().getHour(), LocalDateTime.now().getMinute());
 
+        btnPickTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showTimePicker();
+            }
+        });
         btnPickDateTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDatePicker();
             }
         });
+
     }
 
     // 1. Metoda otwierająca Kalendarz
@@ -51,12 +61,14 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                         // Zapisujemy wybraną datę do zmiennych
-                        selectedYear = year;
-                        selectedMonth = monthOfYear; // Pamiętaj: 0-11
-                        selectedDay = dayOfMonth;
+
 
                         // Po wybraniu daty, automatycznie otwieramy zegar
-                        showTimePicker();
+                        currentDate = LocalDateTime.of(year, monthOfYear +1, dayOfMonth, currentDate.getHour(), currentDate.getMinute());
+
+                        // Formatujemy i wyświetlamy
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy, HH:mm");
+                        tvSelectedDateTime.setText("Umówiono: " + currentDate.format(formatter));
                     }
                 },
                 year, month, day // Wartości domyślne (startowe)
@@ -79,11 +91,11 @@ public class MainActivity extends AppCompatActivity {
                         // Tutaj mamy już komplet danych: Rok, Miesiąc, Dzień, Godzinę i Minutę
 
                         // Tworzymy obiekt LocalDateTime (miesiąc + 1 dla LocalDate!)
-                        LocalDateTime dateTime = LocalDateTime.of(selectedYear, selectedMonth + 1, selectedDay, hourOfDay, minute);
+                        currentDate = LocalDateTime.of(currentDate.getYear(), currentDate.getMonth(), currentDate.getDayOfMonth(), hourOfDay, minute);
 
                         // Formatujemy i wyświetlamy
                         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy, HH:mm");
-                        tvSelectedDateTime.setText("Umówiono: " + dateTime.format(formatter));
+                        tvSelectedDateTime.setText("Umówiono: " + currentDate.format(formatter));
                     }
                 },
                 hour, minute, true // true = format 24h
